@@ -2,13 +2,20 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import time
 
 host_name = "localhost"
-server_port = 8080
+server_port = 9999
 
 class BasicServer(BaseHTTPRequestHandler):
     def do_GET(self):
-        self.send_response(400)
-        self.send_header("Content-type", "text/html")
-        self.end_headers()
+        if self.path == '/success':
+            self.send_response(200)
+            self.send_header("Content-type", "text/html")
+            self.end_headers()
+            self.wfile.write("Success\n".encode())
+        elif self.path == '/fail':
+            self.send_response(430)
+            self.send_header("Content-type", "text/html")
+            self.end_headers()
+
 
 if __name__ == "__main__":
     server = HTTPServer((host_name, server_port), BasicServer)
